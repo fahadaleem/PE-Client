@@ -15,7 +15,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [isAuthenticated]);
   return (
     <ChakraProvider theme={theme}>
-      {userLoggedIn ? <Component {...pageProps} /> : <LoginForm />}
+      {/* {userLoggedIn ? <Component {...pageProps} /> : <LoginForm />} */}
+      <Component {...pageProps} />
     </ChakraProvider>
   );
 }
