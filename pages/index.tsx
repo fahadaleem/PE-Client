@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { LoginForm, StudentsTable } from "../components";
-import { PerformanceDutiesForm } from "../components/performanceDutiesForm/PerformanceDutiesForm";
+import { PNCoreValueForm } from "../components";
 import PerformanceEvaluationForm from "./performance-evaluation";
 
 const Home: NextPage = () => {
@@ -15,7 +15,7 @@ const Home: NextPage = () => {
 
         {/* <StudentsTable /> */}
         {/* <PerformanceEvaluationForm /> */}
-        <PerformanceDutiesForm />
+        <PNCoreValueForm />
       </Box>
     </>
   );

@@ -9,7 +9,7 @@ import {
   RadioGroup,
   Stack,
 } from "@chakra-ui/react";
-export const PerformanceDutiesForm = () => {
+export const PNCoreValueForm = () => {
   const [value, setValue] = useState(1);
   const [data, setData] = useState([
     {
