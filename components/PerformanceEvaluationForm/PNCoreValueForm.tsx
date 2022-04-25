@@ -15,6 +15,11 @@ import {
 } from "@chakra-ui/react";
 import { set } from "react-hook-form";
 
+interface IEval {
+  questionId: number;
+  option: string;
+}
+
 export const PNCoreValueForm = () => {
   const [weight, setWeight] = React.useState("1");
   const [selected, setSelected] = useState("");
@@ -24,7 +29,7 @@ export const PNCoreValueForm = () => {
   });
   const group = getRootProps();
 
-  const [eval, setEval] = useState([] );
+  const [evalData, setEvalData] = React.useState([]);
 
   // const[questions,setquestions]=useState([])
   const [questions, setquestions] = useState([
@@ -33,10 +38,6 @@ export const PNCoreValueForm = () => {
       questionId: 1,
       questionDescription: "Progress Of Student",
       options: [
-        {
-          optionTitle: "Option1",
-          optionWeightage: "4",
-        },
         { optionTitle: "Option2", optionWeightage: "1" },
         { optionTitle: "Option3", optionWeightage: "2" },
         { optionTitle: "Option4", optionWeightage: "3" },
@@ -52,10 +53,10 @@ export const PNCoreValueForm = () => {
           optionTitle: "Option1",
           optionWeightage: "5",
         },
-        { optionTitle: "Option2", optionWeightage: "5" },
-        { optionTitle: "Option3", optionWeightage: "6" },
-        { optionTitle: "Option4", optionWeightage: "7" },
-        { optionTitle: "Option5", optionWeightage: "8" },
+        { optionTitle: "Option2", optionWeightage: "1" },
+        { optionTitle: "Option3", optionWeightage: "2" },
+        { optionTitle: "Option4", optionWeightage: "3" },
+        { optionTitle: "Option5", optionWeightage: "4" },
       ],
     },
     {
@@ -63,43 +64,10 @@ export const PNCoreValueForm = () => {
       questionId: 3,
       questionDescription: "Progress Of Student",
       options: [
-        {
-          id: 1,
-          optionTitle: "Option1",
-          optionWeightage: "4",
-        },
-        { id: 2, optionTitle: "Option2", optionWeightage: "9" },
-        { id: 3, optionTitle: "Option3", optionWeightage: "10" },
-        { id: 4, optionTitle: "Option4", optionWeightage: "11" },
-        { id: 5, optionTitle: "Option5", optionWeightage: "12" },
-      ],
-    },
-    {
-      questionTitle: "Test Question 4",
-      questionId: 4,
-      questionDescription: "Progress Of Student",
-      options: [
-        { id: 1, optionTitle: "Option1", optionWeightage: "13" },
-        { id: 2, optionTitle: "Option2", optionWeightage: "14" },
-        { id: 3, optionTitle: "Option3", optionWeightage: "15" },
-        { id: 4, optionTitle: "Option4", optionWeightage: "16" },
-        { id: 5, optionTitle: "Option5", optionWeightage: "17" },
-      ],
-    },
-    {
-      questionTitle: "Test Question 5",
-      questionId: 5,
-      questionDescription: "Progress Of Student",
-      options: [
-        {
-          id: 1,
-          optionTitle: "Option1",
-          optionWeightage: "18",
-        },
-        { id: 2, optionTitle: "Option2", optionWeightage: "19" },
-        { id: 3, optionTitle: "Option3", optionWeightage: "20" },
-        { id: 4, optionTitle: "Option4", optionWeightage: "21" },
-        { id: 5, optionTitle: "Option5", optionWeightage: "22" },
+        { id: 2, optionTitle: "Option2", optionWeightage: "1" },
+        { id: 3, optionTitle: "Option3", optionWeightage: "2" },
+        { id: 4, optionTitle: "Option4", optionWeightage: "3" },
+        { id: 5, optionTitle: "Option5", optionWeightage: "4" },
       ],
     },
   ]);
@@ -147,14 +115,32 @@ export const PNCoreValueForm = () => {
             <Box margin={"20px"}>
               {/* <RadioGroup onChange={setValue} value={value}> */}
               <Stack>
-                <RadioGroup onChange={(e)=>{
-                  console.log(e);
-                  const data = {
-                   questionId:question.questionId,
-                   option:e
-                  }
-                  setEval{[...eval, data]}
-                }} value={eval[key].option}>
+                <RadioGroup
+                  onChange={(e) => {
+                    const data = {
+                      questionId: question.questionId,
+                      option: e,
+                    };
+
+                    // find the index in evalData
+                    let myDataIndex = evalData.findIndex(
+                      (item, key) => item.questionId == question.questionId
+                    );
+
+                    // if option not selected then add new option to the data.
+
+                    if (myDataIndex === -1) {
+                      setEvalData([...evalData, data]);
+                      return;
+                    } else {
+                      // update the excisting question option.
+                      let newData = evalData;
+                      newData.splice(myDataIndex, 1, data);
+                      setEvalData([...newData]);
+                    }
+                  }}
+                  value={eval[key]?.option}
+                >
                   {question.options.map((optionNo, key) => {
                     return (
                       <div>
