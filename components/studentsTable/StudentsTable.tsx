@@ -19,11 +19,13 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../backendUrl";
 
 export const StudentsTable = () => {
   const [students, setStudents] = useState([]);
+  const router = useRouter();
   useEffect(() => {
     (async () => {
       const resp = await axios.get(`${BACKEND_URL}/api/students`);
@@ -66,6 +68,9 @@ export const StudentsTable = () => {
                           variant="link"
                           color="blue.400"
                           fontWeight={200}
+                          onClick={() =>
+                            router.push("./performance-evaluation")
+                          }
                         >
                           Perform Evaluation
                         </Button>
