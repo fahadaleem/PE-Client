@@ -1,11 +1,11 @@
-import { Box } from "@chakra-ui/react";
+import { Box, propNames } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { LoginForm, StudentsTable } from "../components";
 import { PNCoreValueForm } from "../components";
 import PerformanceEvaluationForm from "./performance-evaluation";
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
   return (
     <>
       <Box minH="100vh" bg="rgb(246,247,250)">
@@ -14,8 +14,8 @@ const Home: NextPage = () => {
         </Head>
 
         {/* <StudentsTable /> */}
-        {/* <PerformanceEvaluationForm /> */}
-        <PNCoreValueForm />
+        <PerformanceEvaluationForm />
+        {/* <PNCoreValueForm /> */}
       </Box>
     </>
   );

@@ -13,25 +13,18 @@ import {
   useRadio,
   useRadioGroup,
 } from "@chakra-ui/react";
-import { set } from "react-hook-form";
+import { Controller, set } from "react-hook-form";
 
 interface IEval {
   questionId: number;
   option: string;
 }
 
-export const PNCoreValueForm = () => {
-  const [weight, setWeight] = React.useState("1");
-  const [selected, setSelected] = useState("");
-  const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "framework",
-    onChange: setSelected,
-  });
-  const group = getRootProps();
-
+export const PNCoreValueForm = (props) => {
   const [evalData, setEvalData] = React.useState([]);
 
   // const[questions,setquestions]=useState([])
+
   const [questions, setquestions] = useState([
     {
       questionTitle: "Test Question 1",
@@ -71,6 +64,7 @@ export const PNCoreValueForm = () => {
       ],
     },
   ]);
+  console.log("props", props);
   // const [scores, setScores] = useState([
   //   {
   //     questionid,questionScore
@@ -87,20 +81,73 @@ export const PNCoreValueForm = () => {
       >
         Evaulation Form
       </Heading>
-      <Text color={"rgb(135,144,174)"} size="lg" textAlign={"center"}>
-        PN Core Value
-      </Text>
-      <Box margin={"20px"}>
-        <Heading as="h3" size="lg" color={"rgb(120,149,246)"}>
-          Charactersistcs
-        </Heading>
-      </Box>
-      {questions.map((question, key) => {
+
+      {props.question.map((title: any, key: any) => {
+        return (
+          <div>
+            <Text color={"rgb(135,144,174)"} size="lg" textAlign={"center"}>
+              {title?.mainSection?.sectionTitle}
+            </Text>
+          </div>
+        );
+      })}
+      {props.question.map((title, key) => {
+        return (
+          <>
+            {title?.mainSection?.subSections?.map(
+              (sectionData: any, key: any) => {
+                return (
+                  <>
+                    <Box m={"20px"}>
+                      <Heading as="h3" size="lg" color={"rgb(120,149,246)"}>
+                        {sectionData.subSectionTitle}
+                      </Heading>
+                    </Box>
+                  </>
+                );
+              }
+            )}
+          </>
+        );
+      })}
+
+      {props.question.map((question: any, key: any) => {
+        question.mainSection.subSections[key].questions.map(
+          (questionNo: any, key: any) => {
+            console.log(questionNo.questionId);
+            console.log(questionNo.questionDescription);
+            return (
+              <>
+                <Box margin={"20px"}>
+                  <Heading as="h3" size="lg" color={"rgb(46,58,115)"}>
+                    Question{":"}
+                    <p>{questionNo.questionId}</p>
+                  </Heading>
+                  <Text
+                    color={"rgb(46,58,115)"}
+                    mt={"10px"}
+                    fontSize="xl"
+                    fontWeight={700}
+                  >
+                    {/* Question {question.questionId} {" : "} */}
+                    {/* {question.questionDescription} */}
+                  </Text>
+                  <Text>
+                    Question Description{questionNo.questionDescription}
+                  </Text>
+                </Box>
+              </>
+            );
+          }
+        );
         return (
           <div key={key}>
             <Box margin={"20px"}>
               <Heading as="h3" size="lg" color={"rgb(46,58,115)"}>
-                {question.questionTitle}
+                Question{":"}
+                {
+                  // question.mainSection.subSections[key].questions
+                }
               </Heading>
               <Text
                 color={"rgb(46,58,115)"}
@@ -108,18 +155,17 @@ export const PNCoreValueForm = () => {
                 fontSize="xl"
                 fontWeight={700}
               >
-                Question {question.questionId} {" : "}
-                {question.questionDescription}
+                {/* Question {question.questionId} {" : "} */}
+                {/* {question.questionDescription} */}
               </Text>
             </Box>
             <Box margin={"20px"}>
-              {/* <RadioGroup onChange={setValue} value={value}> */}
               <Stack>
                 <RadioGroup
                   onChange={(e) => {
                     const data = {
-                      questionId: question.questionId,
-                      option: e,
+                      // questionId: question.questionId,
+                      // option: e,
                     };
 
                     // find the index in evalData
@@ -139,9 +185,9 @@ export const PNCoreValueForm = () => {
                       setEvalData([...newData]);
                     }
                   }}
-                  value={eval[key]?.option}
+                  // value={eval[key]?.option}
                 >
-                  {question.options.map((optionNo, key) => {
+                  {/* {question.options.map((optionNo, key) => {
                     return (
                       <div>
                         <Box
@@ -163,156 +209,13 @@ export const PNCoreValueForm = () => {
                         </Box>
                       </div>
                     );
-                  })}
+                  })} */}
                 </RadioGroup>
-                {/* {question.options.map((optionNo) => {
-                  return (
-                    <div>
-                      <Box
-                        bg={"rgb(229,232,239)"}
-                        width={"200px"}
-                        borderRadius={"10px"}
-                        padding={"5px"}
-                      >
-                        <RadioGroup>
-                          <Radio
-                            onChange={(e) => {
-                              console.log(e.target.value);
-                              setWeight(e.target.value);
-                            }}
-                            style={{
-                              border: "1px solid rgb(76,98,150)",
-                              boxShadow: "none",
-                            }}
-                            colorScheme={"green"}
-                          >
-                            {optionNo.optionTitle}
-                          </Radio>
-                        </RadioGroup>
-                      </Box>
-                    </div>
-                  );
-                })} */}
-
-                {/* <Stack {...group}>
-                  {question.options.map(({ optionWeightage }) => {
-                    const radio = getRadioProps({
-                      optionWeightage,
-                    });
-                    return (
-                      <RadioGroup>
-                        <RadioCard
-                          onChange={(e) => {
-                            console.log(e.target.value);
-                          }}
-                          colorScheme={"green"}
-                          style={{
-                            border: "1px solid red",
-                            backgroundColor: "green",
-                          }}
-                          key={optionWeightage}
-                          {...radio}
-                        >
-                          {optionWeightage}
-                        </RadioCard>
-                      </RadioGroup>
-                    );
-                  })}
-                </Stack> */}
-                <Text paddingY={2}>Selected value: {selected}</Text>
-                {/* <Box
-                    bg={"rgb(229,232,239)"}
-                    width={"200px"}
-                    borderRadius={"10px"}
-                    padding={"5px"}
-                  >
-                    <Radio
-                      style={{
-                        border: "1px solid rgb(76,98,150)",
-                        boxShadow: "none",
-                      }}
-                      colorScheme={"green"}
-                      value="1"
-                    >
-                      {question.options[key].optionTitle}
-                    </Radio>
-                  </Box> */}
-                {/* <Box
-                    bg={"rgb(229,232,239)"}
-                    width={"200px"}
-                    borderRadius={"10px"}
-                    padding={"5px"}
-                    marginTop={"20px"}
-                  >
-                    <Radio
-                      style={{
-                        border: "1px solid rgb(76,98,150)",
-                        boxShadow: "none",
-                      }}
-                      colorScheme={"green"}
-                      value="2"
-                    >
-                      {question.options[key].optionTitle}
-                    </Radio>
-                  </Box> */}
-                {/* <Box
-                    bg={"rgb(229,232,239)"}
-                    width={"200px"}
-                    borderRadius={"10px"}
-                    padding={"5px"}
-                  >
-                    <Radio
-                      colorScheme={"green"}
-                      style={{
-                        border: "1px solid rgb(76,98,150)",
-                        boxShadow: "none",
-                      }}
-                      value="3"
-                      boxShadow={"none"}
-                    >
-                      {question.options[key].optionTitle}
-                    </Radio>
-                  </Box> */}
               </Stack>
-
-              {/* </RadioGroup> */}
             </Box>
           </div>
         );
       })}
-      {/* <RadioGroup></RadioGroup> */}
     </Box>
   );
 };
-
-function RadioCard(props) {
-  const { getInputProps, getCheckboxProps } = useRadio(props);
-
-  const input = getInputProps();
-  const checkbox = getCheckboxProps();
-
-  return (
-    <Box as="label">
-      <input {...input} />
-      <Box
-        {...checkbox}
-        cursor="pointer"
-        borderWidth="1px"
-        borderRadius="md"
-        boxShadow="md"
-        _checked={{
-          bg: "teal.600",
-          color: "white",
-          borderColor: "teal.600",
-        }}
-        _focus={{
-          boxShadow: "outline",
-        }}
-        px={5}
-        py={3}
-      >
-        {props.children}
-      </Box>
-    </Box>
-  );
-}

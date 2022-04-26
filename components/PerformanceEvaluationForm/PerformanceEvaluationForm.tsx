@@ -18,11 +18,25 @@ import {
   SimpleGrid,
   Grid,
   GridItem,
+  background,
 } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { PNCoreValueForm } from "./PNCoreValueForm";
 import { BACKEND_URL } from "../../backendUrl";
+import axios from "axios";
 
 export const PerformanceEvaluation = () => {
+  const [response, setResponse] = React.useState([{}]);
+  const [pncore, setpncore] = useState();
+
+  let evaluationForm = async (id: any) => {
+    const resp = axios.get(`${BACKEND_URL}/api/sections/${id}`).then((res) => {
+      const formData = res;
+      setResponse(formData.data.data);
+    });
+  };
+  console.log(response);
   return (
     <>
       <Box
@@ -103,10 +117,23 @@ export const PerformanceEvaluation = () => {
                 </FormControl>
               </GridItem>
             </SimpleGrid>
-            <Button color="blue.400" fontWeight={200}>
+            <Button
+              onClick={() => {
+                setpncore(true);
+                evaluationForm(1);
+              }}
+              color="blue.400"
+              fontWeight={200}
+            >
               PN core values
             </Button>
-            <Button color="blue.400" fontWeight={200}>
+            <Button
+              onClick={() => {
+                evaluationForm(2);
+              }}
+              color="blue.400"
+              fontWeight={200}
+            >
               Professional Atributes
             </Button>
             <Box d="flex" justifyContent="space-between">
@@ -123,6 +150,7 @@ export const PerformanceEvaluation = () => {
           </Stack>
         </form>
       </Box>
+      {pncore == true ? <PNCoreValueForm question={response} /> : ""}
     </>
   );
 };

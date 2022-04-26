@@ -83,7 +83,7 @@ export const LoginForm = () => {
         mx="auto"
       >
         <Heading fontSize={"4xl"} color="brand.primary" textAlign="center">
-          Sign in to your account{" "}
+          Sign in to your account
         </Heading>
         <form onSubmit={handleSubmit(handleLogin)}>
           <Stack spacing={4} my={6}>
